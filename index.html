@@ -23,7 +23,10 @@
             padding-bottom: 10px;
             border-bottom: 2px solid #ddd;
         }
-        .api-call h2 {
+        .api-call  h2 {
+            color: #333;
+        }
+        .class-heading {
             color: #333;
         }
         .description, .parameters, .example {
@@ -77,6 +80,9 @@
     <div class="table-of-contents">
         <h2>Table of Contents</h2>
         <ul>
+            <li><a href="#custom-classes">Custom Lua Classes</a></li>
+            <li><a href="#actor-class">Actor</a></li>
+            <li><a href="#vector2-class">Vector2</a></li>
             <li><a href="#application-api">Application API</a></li>
             <li><a href="#input-api">Input API</a></li>
             <li><a href="#actor-api">Actor API</a></li>
@@ -88,6 +94,157 @@
         </ul>
     </div>
     
+    <section id="custom-classes">
+        <h1 class="section-heading">Custom Lua Classes</h1>
+        <p>This section provides documentation on C++ classes that have been made accessible in Lua through LuaBridge, detailing available methods and their usage.</p>
+    
+        <div class="class-section" id="actor-class">
+            <h2 class="class-heading" id="actor-class">Actor Class</h2>
+            <p>The <code>Actor</code> class represents an entity in the game world, with functions to manipulate its components and properties.</p>
+    
+            <h3>Methods</h3>
+            <div class="api-call">
+                <h4>GetName()</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns the name of the actor.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local actorName = actor:GetName()</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>GetID()</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns the ID of the actor.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local actorID = actor:GetID()</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>GetComponent(type_name)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns a reference to the first component of type <code>type_name</code>. Returns <code>nil</code> if a component of type <code>type_name</code> doesn't exist.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local transform = actor:GetComponent("Transform")</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>GetComponents(type_name)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns a reference to all components of type <code>type_name</code> in the form of an indexed table. Returns <code>nil</code> if a component of type <code>type_name</code> doesn't exist.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local sprite_renderers = actor:GetComponent("SpriteRenderer")</code>
+                    <code>sprite_renderers[1].sprite = "sprite_1"</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>GetComponentByKey(key)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns a reference to the component with the key <code>key</code>. Returns <code>nil</code> if a component with the key <code>key</code> doesn't exist.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local first_component = actor:GetComponentByKey("1")</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>AddComponent(type_name)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Add component of type <code>type_name</code> to actor and return reference to it. The new component should begin executing lifecycle functions on the next frame. The new comopnent's key will be <code>rn</code>, where <code>r</code> denotes a component created at runtime and <code>n</code> is the number of times that <code>AddComponent(type_name)</code> has been called in the entire program.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local sprite_renderer = actor:AddComponent("SpriteRenderer")</code>
+                    <code>sprite_renderer.sprite = "new_sprite"</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>RemoveComponent(component_ref)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Removes component <code>component_ref</code>from the actor.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local sprite_renderer = actor:GetComponent("SpriteRenderer")</code>
+                    <code>actor:RemoveComponent(sprite_renderer)</code>
+                </div>
+            </div>
+        </div>
+
+        <div class="class-section" id="actor-class">
+            <h2 class="class-heading" id="vector2-class">Vector2 Class</h2>
+            <p>The <code>Vector2</code> class represents an 2D mathematical vector. Supports adding and subtracting of vetors as well as scalar multiplication.</p>
+            <strong>Members:</strong>
+            <p><code>x</code> - The x component of the vector.</p>
+            <p><code>y</code> - The y component of the vector.</p>
+            <h3>Methods</h3>
+            <div class="api-call">
+                <h4>Normalize()</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Converts this vector into a unit vector. Returns the length.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local vector = Vector2(2, 5)</code><br>
+                    <code>vector.Normalize()</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>Length()</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>Returns the length of the vector.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local vector = Vector2(2, 5)</code><br>
+                    <code>Debug.Log(vector.Length())</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>Vector2.Distance(a, b)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>A static Vector2 function. Returns <code>Length(a - b)</code>.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local a = Vector2(2, 5)</code><br>
+                    <code>local b = Vector2(-1, -3)</code><br>
+                    <code>Debug.Log(Vector2.Distance(a, b))</code>
+                </div>
+            </div>
+            <div class="api-call">
+                <h4>Vector2.Dot(a, b)</h4>
+                <div class="description">
+                    <strong>Description:</strong>
+                    <p>A static Vector2 function. Returns the dot product of the two vectors.</p>
+                </div>
+                <div class="example">
+                    <strong>Example:</strong>
+                    <code>local a = Vector2(2, 5)</code><br>
+                    <code>local b = Vector2(-1, -3)</code><br>
+                    <code>local dot_product = Vector2.Dot(a, b)</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <section id="application-api">
         <h2 class="section-heading">Application API</h2>
         <div class="api-call">
@@ -475,7 +632,7 @@
             </div>
             <div class="example">
                 <strong>Example:</strong>
-                <code>Image.DrawPixel("enemy_sprite", 500, 500, 45, 1.0, 1.0, 0.5, 0.5, 255, 255, 255, 255, 2)</code>
+                <code>Image.DrawPixel(500, 500, 255, 255, 255, 255)</code>
             </div>
         </div>
     </section>
